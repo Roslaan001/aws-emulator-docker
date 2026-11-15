@@ -26,7 +26,7 @@ docker pull roslaan001/aws-emulator:latest
 
 ### Amazon ECR Public
 ```bash
-docker pull public.ecr.aws/roslaan001/aws-emulator:latest
+docker pull public.ecr.aws/t4e4a3g4/aws-emulator:latest
 ```
 
 ---
