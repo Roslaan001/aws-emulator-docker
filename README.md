@@ -21,7 +21,7 @@ docker pull ghcr.io/roslaan001/aws-emulator:latest
 
 ### Docker Hub
 ```bash
-docker pull roslaan001/aws-emulator:latest
+docker pull abdulsomad005/aws-emulator:latest
 ```
 
 ### Amazon ECR Public
