@@ -29,23 +29,15 @@ docker pull abdulsomad005/aws-emulator:latest
 docker pull public.ecr.aws/t4e4a3g4/aws-emulator:latest
 ```
 
-### 🏷️ Tagging & Versioning Strategy
-To protect your CI pipelines from breaking unexpectedly when upstream AWS releases updates, you can pin to immutable tags:
+### 🏷️ Versioning Strategy
+To protect your CI pipelines from breaking unexpectedly when upstream AWS releases updates, we publish immutable version tags for every release:
 
-| Tag Type | Example Tag | Stability | Use Case |
-| :--- | :--- | :--- | :--- |
-| **Clean 3-Part SemVer** | `:1.0.587` | 🟢 **Immutable** | **Recommended for CI pipelines & production tests** |
-| **Release Version** | `:1.0.0` | 🟢 **Immutable** | Official project milestone releases |
-| **Minor Stream** | `:1.0` | 🟡 Predictable | Tracks non-breaking patches automatically |
-| **Exact Upstream RPM** | `:1.0.587.1` | 🟢 **Immutable** | Full 4-part RPM build number |
-| **Snapshot Date** | `:20261123` | 🟢 **Immutable** | Build date freeze |
-| **Latest** | `:latest` | 🔴 Floating | Local quick starts and manual testing |
+* **`:0.0.1`** (or your pinned release tag) — 🟢 **Immutable**. Recommended for CI pipelines and production testing to guarantee 100% reproducible test runs.
+* **`:latest`** — 🔴 **Floating**. Automatically tracks the latest upstream AWS updates.
 
-For CI pipelines, pinning a 3-part version ensures 100% reproducible test runs:
+For CI pipelines, pinning `:0.0.1` ensures tests never fail unexpectedly from upstream changes:
 ```bash
-docker pull ghcr.io/roslaan001/aws-emulator:1.0.587
-# or your project release:
-docker pull ghcr.io/roslaan001/aws-emulator:1.0.0
+docker pull ghcr.io/roslaan001/aws-emulator:0.0.1
 ```
 
 ---
