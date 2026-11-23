@@ -60,24 +60,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 3. Log in to Amazon ECR Public (if secrets provided)
+      # 3. Log in to Amazon ECR Public via OIDC Role
       - name: Configure AWS credentials
-        if: github.event_name != 'pull_request' && env.AWS_KEY != '' && env.AWS_SECRET != ''
+        if: github.event_name != 'pull_request' && secrets.AWS_ROLE_TO_ASSUME != ''
         uses: aws-actions/configure-aws-credentials@v4
-        env:
-          AWS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: us-east-1
 
       - name: Log in to Amazon ECR Public
-        if: github.event_name != 'pull_request' && env.AWS_KEY != '' && env.AWS_SECRET != ''
+        if: github.event_name != 'pull_request' && secrets.AWS_ROLE_TO_ASSUME != ''
         uses: aws-actions/amazon-ecr-login@v2
-        env:
-          AWS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
           registry-type: public
 
