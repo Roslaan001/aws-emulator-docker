@@ -29,6 +29,21 @@ docker pull abdulsomad005/aws-emulator:latest
 docker pull public.ecr.aws/t4e4a3g4/aws-emulator:latest
 ```
 
+### 🏷️ Tagging & Versioning Strategy
+To protect your CI pipelines from breaking unexpectedly when upstream AWS releases updates, you can pin to immutable tags:
+
+| Tag Type | Example Tag | Stability | Use Case |
+| :--- | :--- | :--- | :--- |
+| **Exact Upstream RPM** | `:1.0.587.1` | 🟢 **Immutable** | **Recommended for CI pipelines & production tests** |
+| **Minor Stream** | `:1.0` | 🟡 Predictable | Tracks non-breaking patches automatically |
+| **Snapshot Date** | `:20261123` | 🟢 **Immutable** | Build date freeze |
+| **Latest** | `:latest` | 🔴 Floating | Local quick starts and manual testing |
+
+For CI pipelines, pinning the exact upstream version ensures 100% reproducible test runs:
+```bash
+docker pull ghcr.io/roslaan001/aws-emulator:1.0.587.1
+```
+
 ---
 
 ## 🚀 Quick Start
