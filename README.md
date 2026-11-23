@@ -34,14 +34,18 @@ To protect your CI pipelines from breaking unexpectedly when upstream AWS releas
 
 | Tag Type | Example Tag | Stability | Use Case |
 | :--- | :--- | :--- | :--- |
-| **Exact Upstream RPM** | `:1.0.587.1` | 🟢 **Immutable** | **Recommended for CI pipelines & production tests** |
+| **Clean 3-Part SemVer** | `:1.0.587` | 🟢 **Immutable** | **Recommended for CI pipelines & production tests** |
+| **Release Version** | `:1.0.0` | 🟢 **Immutable** | Official project milestone releases |
 | **Minor Stream** | `:1.0` | 🟡 Predictable | Tracks non-breaking patches automatically |
+| **Exact Upstream RPM** | `:1.0.587.1` | 🟢 **Immutable** | Full 4-part RPM build number |
 | **Snapshot Date** | `:20261123` | 🟢 **Immutable** | Build date freeze |
 | **Latest** | `:latest` | 🔴 Floating | Local quick starts and manual testing |
 
-For CI pipelines, pinning the exact upstream version ensures 100% reproducible test runs:
+For CI pipelines, pinning a 3-part version ensures 100% reproducible test runs:
 ```bash
-docker pull ghcr.io/roslaan001/aws-emulator:1.0.587.1
+docker pull ghcr.io/roslaan001/aws-emulator:1.0.587
+# or your project release:
+docker pull ghcr.io/roslaan001/aws-emulator:1.0.0
 ```
 
 ---

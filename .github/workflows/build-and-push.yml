@@ -83,12 +83,16 @@ jobs:
           if [ -z "$VERSION" ] || [ "$VERSION" = "null" ]; then
             echo "Failed to fetch upstream version, falling back to empty"
             VERSION=""
+            SEMVER_3=""
             MAJOR_MINOR=""
           else
-            echo "Upstream AWS Emulator version: ${VERSION}"
+            echo "Upstream AWS Emulator raw version: ${VERSION}"
+            SEMVER_3=$(echo "${VERSION}" | cut -d. -f1,2,3)
             MAJOR_MINOR=$(echo "${VERSION}" | cut -d. -f1,2)
+            echo "Standard 3-part SemVer: ${SEMVER_3}"
           fi
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "semver_3=${SEMVER_3}" >> $GITHUB_OUTPUT
           echo "major_minor=${MAJOR_MINOR}" >> $GITHUB_OUTPUT
 
       # Generate metadata & tags for all configured registries
@@ -102,12 +106,14 @@ jobs:
             ${{ secrets.PUBLIC_ECR_ALIAS != '' && format('public.ecr.aws/{0}/aws-emulator', secrets.PUBLIC_ECR_ALIAS) || '' }}
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=${{ steps.upstream.outputs.semver_3 }},enable=${{ steps.upstream.outputs.semver_3 != '' && '{{is_default_branch}}' || 'false' }}
             type=raw,value=${{ steps.upstream.outputs.version }},enable=${{ steps.upstream.outputs.version != '' && '{{is_default_branch}}' || 'false' }}
             type=raw,value=${{ steps.upstream.outputs.major_minor }},enable=${{ steps.upstream.outputs.major_minor != '' && '{{is_default_branch}}' || 'false' }}
             type=raw,value={{date 'YYYYMMDD'}},enable={{is_default_branch}}
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
 
       # Build and push multi-arch image
       - name: Build and push image
